@@ -1,5 +1,8 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -55,8 +58,20 @@ public class Store {
      * A17|Wireless Mouse|19.99
      */
     public static void loadInventory(String fileName, ArrayList<Product> inventory) {
-        // TODO: read each line, split on "|",
-        //       create a Product object, and add it to the inventory list
+        try(BufferedReader reader = new BufferedReader((new FileReader(fileName)))){
+            String input = reader.readLine();
+            while((input = reader.readLine()) != null){
+                String[] token = input.split("\\|");
+                String sku = token[0];
+                String name = token[1];
+                double price = Double.parseDouble(token[2]);
+                String department = token[3];
+                inventory.add(new Product(sku, name, price, department));
+            }
+        }
+        catch(IOException ex){
+            System.err.println("Error Reading File");
+        }
     }
 
     /**
@@ -66,8 +81,21 @@ public class Store {
     public static void displayProducts(ArrayList<Product> inventory,
                                        ArrayList<Product> cart,
                                        Scanner scanner) {
-        // TODO: show each product (id, name, price),
-        //       prompt for an id, find that product, add to cart
+        for(Product product : inventory){
+            System.out.println(product.displayStringCart());
+        }
+
+        System.out.println("Enter Product Id: ");
+        System.out.println("(X) Return to Main Menu");
+        String id = scanner.nextLine();
+
+        if(id.equalsIgnoreCase("X")) return;
+
+        Product selected = findProductById(id, inventory);
+        if(selected != null){
+            cart.add(selected);
+            System.out.println("Product Added");
+        }
     }
 
     /**
@@ -75,11 +103,23 @@ public class Store {
      * and offers the option to check out.
      */
     public static void displayCart(ArrayList<Product> cart, Scanner scanner) {
-        // TODO:
-        //   • list each product in the cart
-        //   • compute the total cost
-        //   • ask the user whether to check out (C) or return (X)
-        //   • if C, call checkOut(cart, totalAmount, scanner)
+        double totalPrice = 0;
+        System.out.println("Your cart: ");
+
+        for(Product product : cart){
+            System.out.println(product.displayStringCart());
+            totalPrice += product.getPrice();
+        }
+
+        System.out.println("(C) CheckOut: ");
+        System.out.println("(X) Return: ");
+        String userInput = scanner.nextLine();
+        if(userInput.equalsIgnoreCase("C")){
+            checkOut(cart, totalPrice, scanner);
+            return;
+        }
+        System.out.println("MENU");
+
     }
 
     /**
@@ -92,7 +132,25 @@ public class Store {
     public static void checkOut(ArrayList<Product> cart,
                                 double totalAmount,
                                 Scanner scanner) {
-        // TODO: implement steps listed above
+        System.out.println("(Y) CheckOut");
+        System.out.println("(R) Remove A Item");
+        String userInput = scanner.nextLine();
+
+        boolean exit = false;
+        while(!exit){
+            switch(userInput.toUpperCase()) {
+                case "R":
+                    removeItem(cart, scanner);
+                    break;
+                case "Y":
+                    checkOut(cart, scanner, totalAmount);
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("MENU");
+                    exit = true;
+            }
+        }
     }
 
     /**
@@ -101,9 +159,51 @@ public class Store {
      * @return the matching Product, or null if not found
      */
     public static Product findProductById(String id, ArrayList<Product> inventory) {
-        // TODO: loop over the list and compare ids
+        for(Product product : inventory){
+            if(id.equalsIgnoreCase(product.getSku())){
+                return product;
+            }
+        }
+        System.out.println("Product Non-Existent");
         return null;
     }
-}
 
- 
+
+
+    public static void checkOut(ArrayList<Product> cart, Scanner scanner, double totalAmount){
+        System.out.println("Enter Payment.");
+        double userPay = scanner.nextDouble();
+        scanner.nextLine();
+        double change = userPay - totalAmount;
+        System.out.println("Items Bought: ");
+
+        for (Product product : cart) {
+            System.out.println(product.displayStringCart() + "\n");
+        }
+
+        if(change != 0){
+            System.out.printf("Change: $%.2f%n", change);
+            cart.clear();
+        } else if (change < 0) {
+            System.out.println("Not Enough Money!");
+        }
+
+    }
+    public static void removeItem(ArrayList<Product> cart, Scanner scanner){
+        System.out.println("Enter Id: ");
+        System.out.println("(X) Return");
+        String idInput = scanner.nextLine();
+        if (idInput.equalsIgnoreCase("X")){
+            return;
+        }
+        for (int i = 0; i < cart.size(); i++) {
+            if (idInput.equalsIgnoreCase(cart.get(i).getSku())) {
+                cart.remove(i);
+                System.out.println("Removed!");
+                return;
+            }
+        }
+        System.out.println("Invalid");
+    }
+
+}
