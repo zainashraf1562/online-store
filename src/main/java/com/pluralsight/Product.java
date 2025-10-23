@@ -46,9 +46,6 @@ public class Product {
     }
 
     public String displayStringCart() {
-        return "Product: \nID: " + sku +
-                "\nname: " + name +
-                "\nprice: " + price +
-                "\ndepartment: " + department;
+        return  sku + " | " + name + " | " + price + " | " + department;
     }
 }

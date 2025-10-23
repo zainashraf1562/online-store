@@ -78,14 +78,12 @@ public class Store {
      * Displays all products and lets the user add one to the cart.
      * Typing X returns to the main menu.
      */
-    public static void displayProducts(ArrayList<Product> inventory,
-                                       ArrayList<Product> cart,
-                                       Scanner scanner) {
+    public static void displayProducts(ArrayList<Product> inventory, ArrayList<Product> cart, Scanner scanner) {
+        System.out.println("  ID   |          Name         | Price | Department  ");
         for(Product product : inventory){
             System.out.println(product.displayStringCart());
         }
-
-        System.out.println("Enter Product Id: ");
+        System.out.println("Enter Product Id To Add To Cart: ");
         System.out.println("(X) Return to Main Menu");
         String id = scanner.nextLine();
 
@@ -103,22 +101,22 @@ public class Store {
      * and offers the option to check out.
      */
     public static void displayCart(ArrayList<Product> cart, Scanner scanner) {
-        double totalPrice = 0;
+        double totalAmount = 0;
         System.out.println("Your cart: ");
 
         for(Product product : cart){
             System.out.println(product.displayStringCart());
-            totalPrice += product.getPrice();
+            totalAmount += product.getPrice();
         }
 
         System.out.println("(C) CheckOut: ");
         System.out.println("(X) Return: ");
         String userInput = scanner.nextLine();
         if(userInput.equalsIgnoreCase("C")){
-            checkOut(cart, totalPrice, scanner);
+            checkOut(cart, totalAmount, scanner);
             return;
         }
-        System.out.println("MENU");
+        System.out.println("Returning to MENU");
 
     }
 
@@ -132,25 +130,33 @@ public class Store {
     public static void checkOut(ArrayList<Product> cart,
                                 double totalAmount,
                                 Scanner scanner) {
-        System.out.println("(Y) CheckOut");
-        System.out.println("(R) Remove A Item");
+        System.out.println("Total: " + totalAmount);
+        System.out.println("(Y) Proceed with Purchase");
+        System.out.println("(N) Cancel Purchase");
         String userInput = scanner.nextLine();
 
-        boolean exit = false;
-        while(!exit){
-            switch(userInput.toUpperCase()) {
-                case "R":
-                    removeItem(cart, scanner);
-                    break;
-                case "Y":
-                    checkOut(cart, scanner, totalAmount);
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("MENU");
-                    exit = true;
+        if (userInput.equalsIgnoreCase("Y")) {
+
+            System.out.print("Payment Amount: $");
+            double userPayment = scanner.nextDouble();
+
+            if (userPayment < totalAmount){
+                System.out.println("Not Enough Money");
+                return;
             }
+            double change = userPayment - totalAmount;
+            System.out.printf("Change: $%.2f \n", change);
+
+            System.out.println("Purchased Items: ");
+            for (Product product : cart) {
+                System.out.printf("- %-40s $%7.2f \n", product.getName(), product.getPrice());
+            }
+            System.out.println("Thank You!");
+            cart.clear();
+        } else {
+            System.out.println("Canceled Purchase!");
         }
+
     }
 
     /**
@@ -158,6 +164,7 @@ public class Store {
      *
      * @return the matching Product, or null if not found
      */
+
     public static Product findProductById(String id, ArrayList<Product> inventory) {
         for(Product product : inventory){
             if(id.equalsIgnoreCase(product.getSku())){
@@ -167,43 +174,12 @@ public class Store {
         System.out.println("Product Non-Existent");
         return null;
     }
-
-
-
-    public static void checkOut(ArrayList<Product> cart, Scanner scanner, double totalAmount){
-        System.out.println("Enter Payment.");
-        double userPay = scanner.nextDouble();
-        scanner.nextLine();
-        double change = userPay - totalAmount;
-        System.out.println("Items Bought: ");
-
-        for (Product product : cart) {
-            System.out.println(product.displayStringCart() + "\n");
-        }
-
-        if(change != 0){
-            System.out.printf("Change: $%.2f%n", change);
-            cart.clear();
-        } else if (change < 0) {
-            System.out.println("Not Enough Money!");
-        }
-
-    }
-    public static void removeItem(ArrayList<Product> cart, Scanner scanner){
-        System.out.println("Enter Id: ");
-        System.out.println("(X) Return");
-        String idInput = scanner.nextLine();
-        if (idInput.equalsIgnoreCase("X")){
-            return;
-        }
-        for (int i = 0; i < cart.size(); i++) {
-            if (idInput.equalsIgnoreCase(cart.get(i).getSku())) {
-                cart.remove(i);
-                System.out.println("Removed!");
-                return;
-            }
-        }
-        System.out.println("Invalid");
-    }
-
 }
+
+
+
+
+
+
+
+
