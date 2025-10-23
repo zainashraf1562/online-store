@@ -1,19 +1,39 @@
-# Project Title
+# 🛒 Online Store Application
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+The **Online Store Application** is a Java console-based project that simulates a simple shopping experience.  
+It allows users to browse products, add or remove items from their shopping cart, and complete purchases using cash payments.  
+After checkout, the system automatically generates a timestamped sales receipt and saves it inside a dedicated **Receipts** folder.
+
+This project is designed for beginners and students learning **Object-Oriented Programming (OOP)** and **file handling in Java**, offering a hands-on introduction to fundamental programming concepts.
+
+---
+
+## Features
+
+- 🧾 View all available products with unique IDs, names, and prices
+- 🛒 Add or remove products from the shopping cart
+- 💰 Calculate the total cost and handle cash payments
+- 🧾 Display and save a detailed sales receipt after checkout
+- 🗂️ Automatically create a `Receipts` folder if it doesn’t already exist
+
+---
 
 ## User Stories
 
-List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
+- As a customer, I want to see a list of main menu options when I open the store so that I can easily navigate to view products, view my cart, or exit the store.
+- As a customer, I want to see all available products so that I can decide which items I might want to buy.
+- As a customer, I want to search for a product by entering its SKU so that I can quickly find specific product details.
+- As a customer, I want to add products to my shopping cart so that I can purchase them later during checkout.
+- As a customer, I want to view all items currently in my shopping cart so that I can review what I plan to purchase and see the total cost.
+- As a customer, I want to remove an item from my cart so that I can adjust my purchase before checkout.
+- As a customer, I want to checkout and pay for my items so that I can complete my purchase.
+- As a customer, I want a copy of my receipt saved as a file so that I can keep a record of my purchase.
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+---
 
 ## Setup
-
-Instructions on how to set up and run the project using IntelliJ IDEA.
 
 ### Prerequisites
 
@@ -30,39 +50,38 @@ Follow these steps to get your application running within IntelliJ IDEA:
 4. Find the main class with the `public static void main(String[] args)` method.
 5. Right-click on the file and select 'Run 'YourMainClassName.main()'' to start the application.
 
+---
+
 ## Technologies Used
 
-- Java: Mention the version you are using.
-- Any additional libraries or frameworks used in the project.
+- Java: 17.0.16
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
+Below are example screenshots demonstrating various features of the application:
 
-![Application Screenshot](path/to/your/screenshot.png)
+![HomeScreen](SS2.PNG)
+![CheckOut](SS1.PNG)
+
 
 ## Future Work
 
-Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- When a customer adds multiple items to a cart 
+    - Instead of showing the item multiple times, your cart should only display each item once, but display the quantity for each item
+- Improvement of the UI.
 
 ## Resources
 
-List resources such as tutorials, articles, or documentation that helped you during the project.
+- [Potatoe Sensei](https://chatgpt.com/g/g-681d378b0c90819197b16e49abe384ec-potato-sensei)
+- [Workbooks]
 
-- [Java Programming Tutorial](https://www.example.com)
-- [Effective Java](https://www.example.com)
+## Contributor
 
-## Team Members
-
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+- Zain Ashraf
 
 ## Thanks
 
-Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
+- Thank you to Raymond for continuous support and guidance.
 - A special thanks to all teammates for their dedication and teamwork.
